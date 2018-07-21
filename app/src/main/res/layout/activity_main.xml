@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.qiqi.inputview.InputView
+        android:id="@+id/passwordView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_under"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="under" />
+
+        <Button
+            android:id="@+id/btn_rect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rect" />
+
+        <Button
+            android:id="@+id/btn_fill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="fill" />
+
+        <Button
+            android:id="@+id/btn_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="getText" />
+
+    </LinearLayout>
+
+</RelativeLayout>
