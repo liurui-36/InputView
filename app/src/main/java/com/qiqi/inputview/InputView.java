@@ -24,25 +24,26 @@ import java.util.TimerTask;
 public class InputView extends View {
 
     private Mode mode; //样式模式
-    private int passwordLength;//密码个数
-    private long cursorFlashTime;//光标闪动间隔时间
-    private int passwordPadding;//每个密码间的间隔
-    private int passwordSize;//单个密码大小
+    private int itemSize;//个数
+    private int itemPadding;//间隔
+    private int itemWidth;//宽度
+    private int itemHeight;//高度
+    private int border;//边框/下划线宽度
     private int rectColor;//边框颜色
-    private int rectWidth;//边框宽度
     private int underLineColor;//下划线颜色
-    private int underLineWidth;//下划线宽度
     private int fillColor;//填充颜色
     private int textSize;//文字大小
     private int textColor;//文字颜色
+    private long cursorFlashTime;//光标闪动间隔时间
+    private boolean isCursorEnable;//是否开启光标
+    private boolean cipherEnable;//是否开启密文
+    private int cursorColor;//光标颜色
+
     private int cursorPosition;//光标位置
     private int cursorWidth;//光标粗细
     private int cursorHeight;//光标长度
-    private int cursorColor;//光标颜色
     private boolean isCursorShowing;//光标是否正在显示
-    private boolean isCursorEnable;//是否开启光标
     private boolean isInputComplete;//是否输入完毕
-    private boolean cipherEnable;//是否开启密文
     private static String CIPHER_TEXT = "*"; //密文符号
     private String[] text;//文本数组
     private InputMethodManager inputManager;
@@ -112,13 +113,13 @@ public class InputView extends View {
     private void readAttribute(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.InputView);
-            passwordLength = typedArray.getInteger(R.styleable.InputView_passwordLength, 4);
-            passwordPadding = typedArray.getDimensionPixelSize(R.styleable.InputView_passwordPadding, dp2px(15));
-            passwordSize = typedArray.getDimensionPixelSize(R.styleable.InputView_passwordSize, dp2px(40));
+            itemSize = typedArray.getInteger(R.styleable.InputView_itemSize, 4);
+            itemPadding = typedArray.getDimensionPixelSize(R.styleable.InputView_itemPadding, dp2px(15));
+            itemWidth = typedArray.getDimensionPixelSize(R.styleable.InputView_itemWidth, dp2px(40));
+            itemHeight = typedArray.getDimensionPixelSize(R.styleable.InputView_itemHeight, dp2px(40));
+            border = typedArray.getDimensionPixelSize(R.styleable.InputView_border, dp2px(2));
             rectColor = typedArray.getColor(R.styleable.InputView_rectColor, Color.BLACK);
-            rectWidth = typedArray.getDimensionPixelSize(R.styleable.InputView_rectWidth, dp2px(2));
             underLineColor = typedArray.getColor(R.styleable.InputView_underLineColor, Color.BLACK);
-            underLineWidth = typedArray.getDimensionPixelSize(R.styleable.InputView_underLineWidth, dp2px(2));
             fillColor = typedArray.getColor(R.styleable.InputView_fillColor, Color.GRAY);
             textSize = typedArray.getDimensionPixelSize(R.styleable.InputView_textSize, sp2px(16));
             textColor = typedArray.getColor(R.styleable.InputView_textColor, Color.RED);
@@ -129,7 +130,7 @@ public class InputView extends View {
             mode = Mode.formMode(typedArray.getInteger(R.styleable.InputView_mode, Mode.UNDERLINE.getMode()));
             typedArray.recycle();
         }
-        text = new String[passwordLength];
+        text = new String[itemSize];
         init();
     }
 
@@ -158,16 +159,31 @@ public class InputView extends View {
             case MeasureSpec.UNSPECIFIED:
             case MeasureSpec.AT_MOST:
                 //没有指定大小，宽度 = 单个密码框大小 * 密码位数 + 密码框间距 *（密码位数 - 1）
-                width = passwordSize * passwordLength + passwordPadding * (passwordLength - 1);
+                width = itemWidth * itemSize + itemPadding * (itemSize - 1);
                 break;
             case MeasureSpec.EXACTLY:
                 //指定大小，宽度 = 指定的大小
                 width = MeasureSpec.getSize(widthMeasureSpec);
                 //密码框大小等于 (宽度 - 密码框间距 *(密码位数 - 1)) / 密码位数
-                passwordSize = (width - (passwordPadding * (passwordLength - 1))) / passwordLength;
+                itemWidth = (width - (itemPadding * (itemSize - 1))) / itemSize;
                 break;
         }
-        setMeasuredDimension(width, passwordSize);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int height = 0;
+        switch (heightMode) {
+            case MeasureSpec.UNSPECIFIED:
+            case MeasureSpec.AT_MOST:
+                //没有指定大小，宽度 = 单个密码框大小 * 密码位数 + 密码框间距 *（密码位数 - 1）
+                height = itemHeight;
+                break;
+            case MeasureSpec.EXACTLY:
+                //指定大小，高度 = 指定的大小
+                height = MeasureSpec.getSize(heightMeasureSpec);
+                itemHeight = height;
+                break;
+        }
+
+        setMeasuredDimension(width, height);
     }
 
     @Override
@@ -253,11 +269,11 @@ public class InputView extends View {
      */
     private String add(String c) {
         String addText = null;
-        if (cursorPosition < passwordLength) {
+        if (cursorPosition < itemSize) {
             addText = c;
             text[cursorPosition] = c;
             cursorPosition++;
-            if (cursorPosition == passwordLength) {
+            if (cursorPosition == itemSize) {
                 isInputComplete = true;
             }
         }
@@ -291,12 +307,12 @@ public class InputView extends View {
                 if (cipherEnable) {
                     //没有开启明文显示，绘制密码密文
                     canvas.drawText(CIPHER_TEXT,
-                            (getPaddingLeft() + passwordSize / 2) + (passwordSize + passwordPadding) * i,
+                            (getPaddingLeft() + itemWidth / 2) + (itemWidth + itemPadding) * i,
                             getPaddingTop() + y, paint);
                 } else {
                     //明文显示，直接绘制密码
                     canvas.drawText(text[i],
-                            (getPaddingLeft() + passwordSize / 2) + (passwordSize + passwordPadding) * i,
+                            (getPaddingLeft() + itemWidth / 2) + (itemWidth + itemPadding) * i,
                             getPaddingTop() + y, paint);
                 }
             }
@@ -320,10 +336,10 @@ public class InputView extends View {
             // 起始点y = paddingTop + (单个密码框大小 - 光标大小) / 2
             // 终止点x = 起始点x
             // 终止点y = 起始点y + 光标高度
-            canvas.drawLine((getPaddingLeft() + passwordSize / 2) + (passwordSize + passwordPadding) * cursorPosition,
-                    getPaddingTop() + (passwordSize - cursorHeight) / 2,
-                    (getPaddingLeft() + passwordSize / 2) + (passwordSize + passwordPadding) * cursorPosition,
-                    getPaddingTop() + (passwordSize + cursorHeight) / 2,
+            canvas.drawLine((getPaddingLeft() + itemWidth / 2) + (itemWidth + itemPadding) * cursorPosition,
+                    getPaddingTop() + (itemHeight - cursorHeight) / 2,
+                    (getPaddingLeft() + itemWidth / 2) + (itemWidth + itemPadding) * cursorPosition,
+                    getPaddingTop() + (itemHeight + cursorHeight) / 2,
                     paint);
         }
     }
@@ -338,14 +354,14 @@ public class InputView extends View {
         //画笔初始化
         paint.reset();
         paint.setColor(underLineColor);
-        paint.setStrokeWidth(underLineWidth);
+        paint.setStrokeWidth(border);
         paint.setStyle(Paint.Style.FILL);
-        for (int i = 0; i < passwordLength; i++) {
+        for (int i = 0; i < itemSize; i++) {
             //根据密码位数for循环绘制直线
             // 起始点x为paddingLeft + (单个密码框大小 + 密码框边距) * i , 起始点y为paddingTop + 单个密码框大小
             // 终止点x为 起始点x + 单个密码框大小 , 终止点y与起始点一样不变
-            canvas.drawLine(getPaddingLeft() + (passwordSize + passwordPadding) * i, getPaddingTop() + passwordSize,
-                    getPaddingLeft() + (passwordSize + passwordPadding) * i + passwordSize, getPaddingTop() + passwordSize,
+            canvas.drawLine(getPaddingLeft() + (itemWidth + itemPadding) * i, getPaddingTop() + itemHeight - border / 2,
+                    getPaddingLeft() + (itemWidth + itemPadding) * i + itemWidth, getPaddingTop() + itemHeight - border / 2,
                     paint);
         }
     }
@@ -353,14 +369,14 @@ public class InputView extends View {
     private void drawRect(Canvas canvas, Paint paint) {
         paint.reset();
         paint.setColor(rectColor);
-        paint.setStrokeWidth(rectWidth);
+        paint.setStrokeWidth(border);
         paint.setStyle(Paint.Style.STROKE);
         Rect rect;
-        for (int i = 0; i < passwordLength; i++) {
-            int startX = getPaddingLeft() + (passwordSize + passwordPadding) * i + rectWidth / 2;
-            int startY = getPaddingTop() + rectWidth / 2;
-            int stopX = getPaddingLeft() + (passwordSize + passwordPadding) * i + passwordSize - rectWidth / 2;
-            int stopY = getPaddingTop() + passwordSize - rectWidth / 2;
+        for (int i = 0; i < itemSize; i++) {
+            int startX = getPaddingLeft() + (itemWidth + itemPadding) * i + border / 2;
+            int startY = getPaddingTop() + border / 2;
+            int stopX = getPaddingLeft() + (itemWidth + itemPadding) * i + itemWidth - border / 2;
+            int stopY = getPaddingTop() + itemHeight - border / 2;
 
             rect = new Rect(startX, startY, stopX, stopY);
             canvas.drawRect(rect, paint);
@@ -373,11 +389,11 @@ public class InputView extends View {
         paint.setColor(fillColor);
         paint.setStyle(Paint.Style.FILL);
         Rect rect;
-        for (int i = 0; i < passwordLength; i++) {
-            int startX = getPaddingLeft() + (passwordSize + passwordPadding) * i;
+        for (int i = 0; i < itemSize; i++) {
+            int startX = getPaddingLeft() + (itemWidth + itemPadding) * i;
             int startY = getPaddingTop();
-            int stopX = getPaddingLeft() + (passwordSize + passwordPadding) * i + passwordSize;
-            int stopY = getPaddingTop() + passwordSize;
+            int stopX = getPaddingLeft() + (itemWidth + itemPadding) * i + itemWidth;
+            int stopY = getPaddingTop() + itemHeight;
             rect = new Rect(startX, startY, stopX, stopY);
             canvas.drawRect(rect, paint);
         }
@@ -470,9 +486,12 @@ public class InputView extends View {
         }
     }
 
-    public void setPasswordLength(int passwordLength) {
-        this.passwordLength = passwordLength;
-        postInvalidate();
+    public void setItemSize(int itemSize) {
+        this.itemSize = itemSize;
+    }
+
+    public void setBorder(int border) {
+        this.border = border;
     }
 
     public void setRectColor(int rectColor) {
@@ -480,18 +499,8 @@ public class InputView extends View {
         postInvalidate();
     }
 
-    public void setRectWidth(int rectWidth) {
-        this.rectWidth = rectWidth;
-        postInvalidate();
-    }
-
     public void setUnderLineColor(int underLineColor) {
         this.underLineColor = underLineColor;
-        postInvalidate();
-    }
-
-    public void setUnderLineWidth(int underLineWidth) {
-        this.underLineWidth = underLineWidth;
         postInvalidate();
     }
 

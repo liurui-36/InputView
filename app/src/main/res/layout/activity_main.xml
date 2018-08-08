@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,7 +9,17 @@
         android:id="@+id/passwordView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        app:cipherEnable="false"
+        app:fillColor="#00ff00"
+        app:itemHeight="40dp"
+        app:itemSize="8"
+        app:itemPadding="8dp"
+        app:rectColor="#0000ff"
+        app:textColor="#000000"
+        app:textSize="18sp"
+        app:underLineColor="#ff0000"
+        app:itemWidth="30dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

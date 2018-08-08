@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="InputView">
-        <attr name="passwordLength" format="integer" />
-        <attr name="passwordPadding" format="dimension" />
-        <attr name="passwordSize" format="dimension" />
+        <attr name="itemSize" format="integer" />
+        <attr name="itemPadding" format="dimension" />
+        <attr name="itemWidth" format="dimension" />
+        <attr name="itemHeight" format="dimension" />
+        <attr name="border" format="dimension" />
         <attr name="rectColor" format="color" />
-        <attr name="rectWidth" format="dimension" />
         <attr name="underLineColor" format="color" />
-        <attr name="underLineWidth" format="dimension" />
         <attr name="fillColor" format="color" />
         <attr name="textSize" format="dimension" />
         <attr name="textColor" format="color" />
