@@ -15,7 +15,7 @@
 二、在 module 的build.gradle 文件中导入
 ```
     dependencies {
-	   implementation 'com.github.liurui-36:InputView:1.1.0'
+	   implementation 'com.github.xiao2ge:InputView:1.1.0'
 	}
 ```
 最新版本  [![](https://jitpack.io/v/liurui-36/InputView.svg)](https://jitpack.io/#liurui-36/InputView)
@@ -63,7 +63,7 @@
     <attr name="mode" format="enum">    // 模式
         <enum name="underline" value="0" /> // 下划线
         <enum name="rect" value="1" />  // 边框
-        <enum name="fill" value="2" />  // 北京填充
+        <enum name="fill" value="2" />  // 背景填充
     </attr>
 ```
 
