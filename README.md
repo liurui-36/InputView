@@ -21,12 +21,11 @@
 最新版本  [![](https://jitpack.io/v/liurui-36/InputView.svg)](https://jitpack.io/#liurui-36/InputView)
 
 #### 效果图
-<img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_underline.jpg" width="200px" />
-
-<img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_rect.jpg" width="200px" />
-
-<img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_fill.jpg" width="200px" />
-
+<center class="half">
+	<img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_underline.jpg" width="200px" />
+	<img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_rect.jpg" width="200px" />
+	<img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_fill.jpg" width="200px" />
+</center>
 #### 使用
 
 ```
