@@ -22,7 +22,7 @@
 
 #### 效果图
 <div align="center">
-<img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_underline.jpg" width="200px" /><img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_rect.jpg" width="200px" /><img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_fill.jpg" width="200px" />
+<img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_underline.jpg" width="200px" />    <img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_rect.jpg" width="200px" />    <img src="https://raw.githubusercontent.com/liurui-36/ReadmeResource/master/images/InputView/mode_fill.jpg" width="200px" />
 </div>
 #### 使用
 
